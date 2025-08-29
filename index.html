@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Bitcoin - Secure Crypto Purchase</title>
+    <meta name="description" content="Purchase Bitcoin securely and instantly. Funds sent directly to your wallet.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
+    
+    <style>
+        :root {
+            --primary-color: #f7931a;
+            --primary-dark: #d4761a;
+            --secondary-color: #ff6b35;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+            --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--background-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .bitcoin-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #333;
+            margin: 10px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .config-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            color: #666;
+            border-left: 3px solid var(--info-color);
+        }
+
+        .wallet-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-color);
+            text-align: left;
+        }
+
+        .wallet-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wallet-address {
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: #555;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wallet-address:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(247, 147, 26, 0.2);
+        }
+
+        .copy-hint {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .amount-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .amount-option {
+            padding: 14px 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amount-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .amount-option:hover:not(.selected) {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(247, 147, 26, 0.2);
+        }
+
+        .amount-option:hover::before {
+            left: 100%;
+        }
+
+        .amount-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(247, 147, 26, 0.4);
+        }
+
+        .custom-amount {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .custom-amount input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.1);
+        }
+
+        .purchase-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(247, 147, 26, 0.4);
+            min-width: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .purchase-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .purchase-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(247, 147, 26, 0.6);
+        }
+
+        .purchase-button:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .purchase-button:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .purchase-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 15px 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+            background: #f0f0f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .powered-by {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .amount-selector {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .purchase-button {
+                font-size: 1.1rem;
+                padding: 16px 30px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="bitcoin-icon">₿</div>
+            <h1>Buy Bitcoin</h1>
+            <p class="subtitle">Purchase Bitcoin securely and instantly. Funds sent directly to your wallet.</p>
+        </div>
+
+        <div class="config-info">
+            <strong>🔧 Setup Status:</strong> Production Mode | Partner: 01K1T8VJJ8TY67M49FDXY865GF
+        </div>
+
+        <div class="wallet-info">
+            <div class="wallet-label">
+                <span>📍</span>
+                <span>Your Bitcoin Address:</span>
+            </div>
+            <div class="wallet-address" onclick="copyAddress()" title="Click to copy address">
+                39zC2iwMf6qzmVVEcBdfXG6WpVn84Mwxzv
+            </div>
+            <div class="copy-hint">Click to copy address</div>
+        </div>
+
+        <div class="amount-selector">
+            <div class="amount-option selected" data-amount="50">$50</div>
+            <div class="amount-option" data-amount="100">$100</div>
+            <div class="amount-option" data-amount="250">$250</div>
+            <div class="amount-option" data-amount="500">$500</div>
+            <div class="custom-amount">
+                <input type="number" id="customAmount" placeholder="Enter custom amount ($)" min="25" max="10000" step="1">
+            </div>
+        </div>
+
+        <button id="purchaseBtn" class="purchase-button">
+            💰 Buy Bitcoin Securely
+        </button>
+
+        <div id="status" class="status hidden"></div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-text">Bank Grade Security</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-text">Instant Transfer</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💯</div>
+                <div class="feature-text">Direct to Wallet</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-text">Global Support</div>
+            </div>
+        </div>
+
+        <div class="powered-by">
+            Powered by Wert.io • Secure Bitcoin Purchases
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@wert-io/widget-initializer@1.0.9/dist/index.js"></script>
+    <script>
+        // 🚀 PRODUCTION CONFIGURATION - READY TO USE
+        const CONFIG = {
+            // ✅ YOUR RAILWAY BACKEND URL
+            BACKEND_URL: 'https://wert-bitcoin-backend-production.up.railway.app',
+            
+            // Your production configuration
+            PARTNER_ID: "01K1T8VJJ8TY67M49FDXY865GF",
+            WALLET_ADDRESS: "39zC2iwMf6qzmVVEcBdfXG6WpVn84Mwxzv",
+            WIDGET_ORIGIN: "https://widget.wert.io"
+        };
+
+        let selectedAmount = 50; // Default amount
+        let currentWidget = null;
+
+        // 🎯 Utility Functions
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+            statusElement.classList.remove('hidden');
+        }
+
+        function hideStatus() {
+            const statusElement = document.getElementById('status');
+            statusElement.classList.add('hidden');
+        }
+
+        function setButtonLoading(loading, loadingText = 'Creating secure session') {
+            const button = document.getElementById('purchaseBtn');
+            button.disabled = loading;
+            
+            if (loading) {
+                button.innerHTML = `<span class="loading-spinner"></span>${loadingText}`;
+            } else {
+                button.innerHTML = '💰 Buy Bitcoin Securely';
+            }
+        }
+
+        // 💰 Amount Selection System
+        function initializeAmountSelector() {
+            const amountOptions = document.querySelectorAll('.amount-option');
+            const customAmountInput = document.getElementById('customAmount');
+
+            // Handle preset amount selection
+            amountOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    amountOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedAmount = parseInt(option.dataset.amount);
+                    customAmountInput.value = '';
+                    hideStatus();
+                    console.log('Selected amount:', selectedAmount);
+                });
+            });
+
+            // Handle custom amount input
+            customAmountInput.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                if (value && value >= 25) {
+                    amountOptions.forEach(opt => opt.classList.remove('selected'));
+                    selectedAmount = value;
+                    hideStatus();
+                    console.log('Custom amount:', selectedAmount);
+                }
+            });
+
+            // Input validation
+            customAmountInput.addEventListener('blur', (e) => {
+                const value = parseFloat(e.target.value);
+                if (value && (value < 25 || value > 10000)) {
+                    showStatus('Amount must be between $25 and $10,000', 'error');
+                    setTimeout(hideStatus, 3000);
+                }
+            });
+        }
+
+        // 📋 Copy Address Function
+        function copyAddress() {
+            const address = CONFIG.WALLET_ADDRESS;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(address).then(() => {
+                    showStatus('✅ Wallet address copied to clipboard!', 'success');
+                    setTimeout(hideStatus, 3000);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(address);
+                });
+            } else {
+                fallbackCopyTextToClipboard(address);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showStatus('✅ Wallet address copied to clipboard!', 'success');
+                setTimeout(hideStatus, 3000);
+            } catch (err) {
+                console.error('Copy failed:', err);
+                showStatus('❌ Unable to copy address automatically', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // 🔄 Session Creation
+        async function createSession() {
+            try {
+                showStatus('🔐 Creating secure session...', 'info');
+                
+                const sessionData = {
+                    currency_amount: selectedAmount
+                };
+
+                console.log('Creating session for amount:', selectedAmount);
+                console.log('Backend URL:', CONFIG.BACKEND_URL);
+
+                const response = await fetch(`${CONFIG.BACKEND_URL}/api/create-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(sessionData)
+                });
+
+                console.log('Session API response status:', response.status);
+
+                if (!response.ok) {
+                    let errorMessage = 'Failed to create payment session';
+                    
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || errorMessage;
+                    } catch (parseError) {
+                        const errorText = await response.text();
+                        console.error('Raw error response:', errorText);
+                        
+                        if (response.status === 404) {
+                            errorMessage = 'Backend server not found. Please check Railway deployment.';
+                        } else if (response.status >= 500) {
+                            errorMessage = 'Server error. Please try again in a moment.';
+                        }
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+
+                const sessionResponse = await response.json();
+                console.log('Session created successfully:', sessionResponse);
+                
+                if (!sessionResponse.success || !sessionResponse.sessionId) {
+                    throw new Error('Invalid session response from server');
+                }
+
+                return sessionResponse;
+
+            } catch (error) {
+                console.error('Session creation error:', error);
+                
+                // Enhanced error handling
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    throw new Error('❌ Cannot connect to backend server. Please check Railway deployment.');
+                } else if (error.message.includes('CORS')) {
+                    throw new Error('❌ CORS error - backend configuration needed.');
+                }
+                
+                throw error;
+            }
+        }
+
+        // 🔧 Widget Initialization
+        function initializeWidget(sessionData) {
+            try {
+                const options = {
+                    partner_id: CONFIG.PARTNER_ID,
+                    session_id: sessionData.sessionId,
+                    origin: CONFIG.WIDGET_ORIGIN,
+                    theme: 'light',
+                    brand_color: '#f7931a'
+                };
+
+                console.log('Initializing widget with options:', options);
+
+                const wertWidget = new WertWidget(options);
+                currentWidget = wertWidget;
+
+                // 📡 Event Listeners
+                wertWidget.on('loaded', () => {
+                    console.log('✅ Widget loaded successfully');
+                    showStatus('🎉 Payment widget loaded successfully!', 'success');
+                });
+
+                wertWidget.on('close', () => {
+                    console.log('❌ Widget closed by user');
+                    showStatus('Payment window closed. You can try again anytime.', 'info');
+                    currentWidget = null;
+                    setTimeout(hideStatus, 5000);
+                });
+
+                wertWidget.on('payment-status', (data) => {
+                    console.log('💳 Payment status update:', data);
+                    
+                    switch(data.status) {
+                        case 'pending':
+                            showStatus('⏳ Payment is being processed...', 'info');
+                            break;
+                        case 'success':
+                            showStatus(`🎉 Payment completed! Bitcoin will be sent to your wallet.`, 'success');
+                            break;
+                        case 'failure':
+                            showStatus('❌ Payment failed. Please try again.', 'error');
+                            break;
+                        case 'cancelled':
+                            showStatus('Payment was cancelled. You can try again anytime.', 'info');
+                            setTimeout(hideStatus, 5000);
+                            break;
+                        default:
+                            showStatus(`Payment status: ${data.status}`, 'info');
+                    }
+                });
+
+                wertWidget.on('error', (error) => {
+                    console.error('❌ Widget error:', error);
+                    showStatus('Widget error occurred. Please refresh and try again.', 'error');
+                    currentWidget = null;
+                });
+
+                // 🚀 Open the widget
+                showStatus('🔓 Opening secure payment window...', 'info');
+                wertWidget.open();
+                
+                return wertWidget;
+
+            } catch (error) {
+                console.error('Widget initialization error:', error);
+                throw new Error('Failed to initialize payment widget');
+            }
+        }
+
+        // 🎯 Main Purchase Flow
+        async function handlePurchaseClick() {
+            try {
+                // Validate amount
+                if (!selectedAmount || selectedAmount < 25) {
+                    showStatus('Please select an amount of at least $25', 'error');
+                    return;
+                }
+
+                if (selectedAmount > 10000) {
+                    showStatus('Maximum purchase amount is $10,000', 'error');
+                    return;
+                }
+
+                setButtonLoading(true, 'Creating secure session');
+                hideStatus();
+
+                // Step 1: Create session
+                console.log('🚀 Starting purchase flow for $' + selectedAmount);
+                const sessionData = await createSession();
+
+                // Step 2: Initialize and open widget
+                setButtonLoading(true, 'Opening payment window');
+                await initializeWidget(sessionData);
+
+            } catch (error) {
+                console.error('❌ Purchase flow error:', error);
+                showStatus(error.message, 'error');
+            } finally {
+                setButtonLoading(false);
+            }
+        }
+
+        // 🎬 Initialize Everything
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Initializing Wert.io Bitcoin Purchase Widget');
+            console.log('Backend URL:', CONFIG.BACKEND_URL);
+            console.log('Widget Origin:', CONFIG.WIDGET_ORIGIN);
+            console.log('Partner ID:', CONFIG.PARTNER_ID);
+            
+            // Show ready status
+            console.log('✅ Railway URL configured:', CONFIG.BACKEND_URL);
+            showStatus('✅ Ready to purchase Bitcoin securely!', 'success');
+            setTimeout(hideStatus, 4000);
+            
+            // Initialize components
+            initializeAmountSelector();
+            
+            // Add purchase button event listener
+            const purchaseButton = document.getElementById('purchaseBtn');
+            purchaseButton.addEventListener('click', handlePurchaseClick);
+        });
+
+        // 🔍 Page Visibility Handling
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('📱 Page hidden - widget may be paused');
+            } else {
+                console.log('👀 Page visible - widget may resume');
+            }
+        });
+
+        // 🚨 Global Error Handlers
+        window.addEventListener('error', (event) => {
+            console.error('🚨 Global error:', event.error);
+            if (!document.getElementById('status').classList.contains('error')) {
+                showStatus('An unexpected error occurred. Please refresh the page.', 'error');
+            }
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('🚨 Unhandled promise rejection:', event.reason);
+            if (!document.getElementById('status').classList.contains('error')) {
+                showStatus('An unexpected error occurred. Please try again.', 'error');
+            }
+            event.preventDefault();
+        });
+
+        // 🔗 Preload widget resources
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'dns-prefetch';
+        preloadLink.href = CONFIG.WIDGET_ORIGIN;
+        document.head.appendChild(preloadLink);
+        
+        console.log('✅ Wert.io Bitcoin Widget initialized successfully');
+    </script>
+</body>
+</html>
