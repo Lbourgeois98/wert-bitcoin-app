@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Bitcoin - Secure Crypto Purchase</title>
-    <meta name="description" content="Purchase Bitcoin securely and instantly. Funds sent directly to your wallet.">
+    <meta name="description" content="Purchase Bitcoin securely and instantly using Wert.io">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
     
     <style>
@@ -59,10 +59,6 @@
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
 
-        .header {
-            margin-bottom: 30px;
-        }
-
         .bitcoin-icon {
             font-size: 3rem;
             margin-bottom: 10px;
@@ -92,16 +88,6 @@
             font-weight: 400;
         }
 
-        .config-info {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
-            font-size: 0.85rem;
-            color: #666;
-            border-left: 3px solid var(--info-color);
-        }
-
         .wallet-info {
             background: #f8f9fa;
             border-radius: 12px;
@@ -129,7 +115,6 @@
             word-break: break-all;
             font-size: 0.9rem;
             color: #555;
-            position: relative;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -166,29 +151,12 @@
             transition: var(--transition);
             font-weight: 600;
             font-size: 0.95rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .amount-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
         }
 
         .amount-option:hover:not(.selected) {
             border-color: var(--primary-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(247, 147, 26, 0.2);
-        }
-
-        .amount-option:hover::before {
-            left: 100%;
         }
 
         .amount-option.selected {
@@ -237,34 +205,14 @@
             overflow: hidden;
         }
 
-        .purchase-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
         .purchase-button:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(247, 147, 26, 0.6);
         }
 
-        .purchase-button:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .purchase-button:active:not(:disabled) {
-            transform: translateY(-1px);
-        }
-
         .purchase-button:disabled {
             opacity: 0.7;
             cursor: not-allowed;
-            transform: none;
         }
 
         .loading-spinner {
@@ -358,14 +306,6 @@
             font-weight: 600;
         }
 
-        .powered-by {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem;
-            color: #999;
-        }
-
         @media (max-width: 480px) {
             .container {
                 padding: 30px 20px;
@@ -378,20 +318,11 @@
             
             .amount-selector {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
             }
 
             .purchase-button {
                 font-size: 1.1rem;
                 padding: 16px 30px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -401,17 +332,13 @@
         <div class="header">
             <div class="bitcoin-icon">₿</div>
             <h1>Buy Bitcoin</h1>
-            <p class="subtitle">Purchase Bitcoin securely and instantly. Funds sent directly to your wallet.</p>
-        </div>
-
-        <div class="config-info">
-            <strong>🔧 Setup Status:</strong> Production Mode | Partner: 01K1T8VJJ8TY67M49FDXY865GF
+            <p class="subtitle">Purchase Bitcoin securely with Wert.io - funds sent directly to your wallet</p>
         </div>
 
         <div class="wallet-info">
             <div class="wallet-label">
                 <span>📍</span>
-                <span>Your Bitcoin Address:</span>
+                <span>Bitcoin will be sent to:</span>
             </div>
             <div class="wallet-address" onclick="copyAddress()" title="Click to copy address">
                 39zC2iwMf6qzmVVEcBdfXG6WpVn84Mwxzv
@@ -430,7 +357,7 @@
         </div>
 
         <button id="purchaseBtn" class="purchase-button">
-            💰 Buy Bitcoin Securely
+            💰 Buy Bitcoin with Wert
         </button>
 
         <div id="status" class="status hidden"></div>
@@ -453,29 +380,27 @@
                 <div class="feature-text">Global Support</div>
             </div>
         </div>
-
-        <div class="powered-by">
-            Powered by Wert.io • Secure Bitcoin Purchases
-        </div>
     </div>
 
+    <!-- Wert SDK -->
     <script src="https://unpkg.com/@wert-io/widget-initializer@1.0.9/dist/index.js"></script>
+    
     <script>
-        // 🚀 PRODUCTION CONFIGURATION - READY TO USE
+        // Configuration
         const CONFIG = {
-            // ✅ YOUR RAILWAY BACKEND URL
-            BACKEND_URL: 'https://wert-bitcoin-backend-production.up.railway.app',
+            // Your production backend URL (replace with your Railway URL)
+            BACKEND_URL: 'https://your-app-name.up.railway.app',
             
-            // Your production configuration
+            // Your Wert.io configuration
             PARTNER_ID: "01K1T8VJJ8TY67M49FDXY865GF",
             WALLET_ADDRESS: "39zC2iwMf6qzmVVEcBdfXG6WpVn84Mwxzv",
-            WIDGET_ORIGIN: "https://widget.wert.io"
+            WIDGET_ORIGIN: "https://widget.wert.io" // Production origin
         };
 
         let selectedAmount = 50; // Default amount
         let currentWidget = null;
 
-        // 🎯 Utility Functions
+        // Utility Functions
         function showStatus(message, type) {
             const statusElement = document.getElementById('status');
             statusElement.textContent = message;
@@ -488,23 +413,22 @@
             statusElement.classList.add('hidden');
         }
 
-        function setButtonLoading(loading, loadingText = 'Creating secure session') {
+        function setButtonLoading(loading, loadingText = 'Creating secure session...') {
             const button = document.getElementById('purchaseBtn');
             button.disabled = loading;
             
             if (loading) {
                 button.innerHTML = `<span class="loading-spinner"></span>${loadingText}`;
             } else {
-                button.innerHTML = '💰 Buy Bitcoin Securely';
+                button.innerHTML = '💰 Buy Bitcoin with Wert';
             }
         }
 
-        // 💰 Amount Selection System
+        // Amount Selection
         function initializeAmountSelector() {
             const amountOptions = document.querySelectorAll('.amount-option');
             const customAmountInput = document.getElementById('customAmount');
 
-            // Handle preset amount selection
             amountOptions.forEach(option => {
                 option.addEventListener('click', () => {
                     amountOptions.forEach(opt => opt.classList.remove('selected'));
@@ -512,32 +436,20 @@
                     selectedAmount = parseInt(option.dataset.amount);
                     customAmountInput.value = '';
                     hideStatus();
-                    console.log('Selected amount:', selectedAmount);
                 });
             });
 
-            // Handle custom amount input
             customAmountInput.addEventListener('input', (e) => {
                 const value = parseFloat(e.target.value);
                 if (value && value >= 25) {
                     amountOptions.forEach(opt => opt.classList.remove('selected'));
                     selectedAmount = value;
                     hideStatus();
-                    console.log('Custom amount:', selectedAmount);
-                }
-            });
-
-            // Input validation
-            customAmountInput.addEventListener('blur', (e) => {
-                const value = parseFloat(e.target.value);
-                if (value && (value < 25 || value > 10000)) {
-                    showStatus('Amount must be between $25 and $10,000', 'error');
-                    setTimeout(hideStatus, 3000);
                 }
             });
         }
 
-        // 📋 Copy Address Function
+        // Copy Address Function
         function copyAddress() {
             const address = CONFIG.WALLET_ADDRESS;
             
@@ -568,96 +480,69 @@
                 showStatus('✅ Wallet address copied to clipboard!', 'success');
                 setTimeout(hideStatus, 3000);
             } catch (err) {
-                console.error('Copy failed:', err);
                 showStatus('❌ Unable to copy address automatically', 'error');
             }
             
             document.body.removeChild(textArea);
         }
 
-        // 🔄 Session Creation
+        // Create Session via Backend
         async function createSession() {
             try {
-                showStatus('🔐 Creating secure session...', 'info');
-                
-                const sessionData = {
-                    currency_amount: selectedAmount
-                };
-
-                console.log('Creating session for amount:', selectedAmount);
-                console.log('Backend URL:', CONFIG.BACKEND_URL);
-
                 const response = await fetch(`${CONFIG.BACKEND_URL}/api/create-session`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
                     },
-                    body: JSON.stringify(sessionData)
+                    body: JSON.stringify({
+                        currency_amount: selectedAmount
+                    })
                 });
-
-                console.log('Session API response status:', response.status);
 
                 if (!response.ok) {
                     let errorMessage = 'Failed to create payment session';
-                    
                     try {
                         const errorData = await response.json();
                         errorMessage = errorData.error || errorMessage;
-                    } catch (parseError) {
-                        const errorText = await response.text();
-                        console.error('Raw error response:', errorText);
-                        
+                    } catch (e) {
                         if (response.status === 404) {
-                            errorMessage = 'Backend server not found. Please check Railway deployment.';
-                        } else if (response.status >= 500) {
-                            errorMessage = 'Server error. Please try again in a moment.';
+                            errorMessage = 'Backend server not found. Please check your deployment.';
                         }
                     }
-                    
                     throw new Error(errorMessage);
                 }
 
-                const sessionResponse = await response.json();
-                console.log('Session created successfully:', sessionResponse);
+                const sessionData = await response.json();
                 
-                if (!sessionResponse.success || !sessionResponse.sessionId) {
+                if (!sessionData.success || !sessionData.sessionId) {
                     throw new Error('Invalid session response from server');
                 }
 
-                return sessionResponse;
+                return sessionData.sessionId;
 
             } catch (error) {
                 console.error('Session creation error:', error);
-                
-                // Enhanced error handling
-                if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                    throw new Error('❌ Cannot connect to backend server. Please check Railway deployment.');
-                } else if (error.message.includes('CORS')) {
-                    throw new Error('❌ CORS error - backend configuration needed.');
-                }
-                
                 throw error;
             }
         }
 
-        // 🔧 Widget Initialization
-        function initializeWidget(sessionData) {
+        // Initialize Wert Widget
+        function initializeWidget(sessionId) {
             try {
                 const options = {
                     partner_id: CONFIG.PARTNER_ID,
-                    session_id: sessionData.sessionId,
+                    session_id: sessionId,
                     origin: CONFIG.WIDGET_ORIGIN,
                     theme: 'light',
                     brand_color: '#f7931a'
                 };
 
-                console.log('Initializing widget with options:', options);
+                console.log('Initializing Wert widget with options:', options);
 
                 const wertWidget = new WertWidget(options);
                 currentWidget = wertWidget;
 
-                // 📡 Event Listeners
+                // Event Listeners
                 wertWidget.on('loaded', () => {
                     console.log('✅ Widget loaded successfully');
                     showStatus('🎉 Payment widget loaded successfully!', 'success');
@@ -678,7 +563,7 @@
                             showStatus('⏳ Payment is being processed...', 'info');
                             break;
                         case 'success':
-                            showStatus(`🎉 Payment completed! Bitcoin will be sent to your wallet.`, 'success');
+                            showStatus('🎉 Payment completed! Bitcoin will be sent to your wallet.', 'success');
                             break;
                         case 'failure':
                             showStatus('❌ Payment failed. Please try again.', 'error');
@@ -698,7 +583,7 @@
                     currentWidget = null;
                 });
 
-                // 🚀 Open the widget
+                // Open the widget
                 showStatus('🔓 Opening secure payment window...', 'info');
                 wertWidget.open();
                 
@@ -710,7 +595,7 @@
             }
         }
 
-        // 🎯 Main Purchase Flow
+        // Main Purchase Flow
         async function handlePurchaseClick() {
             try {
                 // Validate amount
@@ -724,16 +609,16 @@
                     return;
                 }
 
-                setButtonLoading(true, 'Creating secure session');
+                setButtonLoading(true, 'Creating secure session...');
                 hideStatus();
 
                 // Step 1: Create session
                 console.log('🚀 Starting purchase flow for $' + selectedAmount);
-                const sessionData = await createSession();
+                const sessionId = await createSession();
 
                 // Step 2: Initialize and open widget
-                setButtonLoading(true, 'Opening payment window');
-                await initializeWidget(sessionData);
+                setButtonLoading(true, 'Opening payment window...');
+                await initializeWidget(sessionId);
 
             } catch (error) {
                 console.error('❌ Purchase flow error:', error);
@@ -743,17 +628,9 @@
             }
         }
 
-        // 🎬 Initialize Everything
+        // Initialize Everything
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🚀 Initializing Wert.io Bitcoin Purchase Widget');
-            console.log('Backend URL:', CONFIG.BACKEND_URL);
-            console.log('Widget Origin:', CONFIG.WIDGET_ORIGIN);
-            console.log('Partner ID:', CONFIG.PARTNER_ID);
-            
-            // Show ready status
-            console.log('✅ Railway URL configured:', CONFIG.BACKEND_URL);
-            showStatus('✅ Ready to purchase Bitcoin securely!', 'success');
-            setTimeout(hideStatus, 4000);
             
             // Initialize components
             initializeAmountSelector();
@@ -761,40 +638,23 @@
             // Add purchase button event listener
             const purchaseButton = document.getElementById('purchaseBtn');
             purchaseButton.addEventListener('click', handlePurchaseClick);
+            
+            // Show ready status
+            showStatus('✅ Ready to purchase Bitcoin securely!', 'success');
+            setTimeout(hideStatus, 4000);
         });
 
-        // 🔍 Page Visibility Handling
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('📱 Page hidden - widget may be paused');
-            } else {
-                console.log('👀 Page visible - widget may resume');
-            }
-        });
-
-        // 🚨 Global Error Handlers
+        // Global Error Handlers
         window.addEventListener('error', (event) => {
             console.error('🚨 Global error:', event.error);
-            if (!document.getElementById('status').classList.contains('error')) {
-                showStatus('An unexpected error occurred. Please refresh the page.', 'error');
-            }
+            showStatus('An unexpected error occurred. Please refresh the page.', 'error');
         });
 
         window.addEventListener('unhandledrejection', (event) => {
             console.error('🚨 Unhandled promise rejection:', event.reason);
-            if (!document.getElementById('status').classList.contains('error')) {
-                showStatus('An unexpected error occurred. Please try again.', 'error');
-            }
+            showStatus('An unexpected error occurred. Please try again.', 'error');
             event.preventDefault();
         });
-
-        // 🔗 Preload widget resources
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'dns-prefetch';
-        preloadLink.href = CONFIG.WIDGET_ORIGIN;
-        document.head.appendChild(preloadLink);
-        
-        console.log('✅ Wert.io Bitcoin Widget initialized successfully');
     </script>
 </body>
 </html>
