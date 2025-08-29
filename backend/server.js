@@ -18,13 +18,12 @@ const WERT_CONFIG = {
 // Middleware
 app.use(express.json({ limit: '10mb' }));
 
-// CORS Configuration - Allow your frontend domains
+// CORS Configuration
 const corsOptions = {
     origin: [
         'http://localhost:3000',
         'http://localhost:3001', 
         'http://localhost:8080',
-        'https://your-netlify-site.netlify.app', // Replace with your Netlify URL
         /\.netlify\.app$/,
         /\.vercel\.app$/,
         /\.railway\.app$/
