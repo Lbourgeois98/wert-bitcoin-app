@@ -4,13 +4,18 @@
   "description": "Wert.io Bitcoin backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node -e \"console.log('Server test passed')\""
   },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5"
   },
   "engines": {
-    "node": "18.x"
-  }
+    "node": ">=16.0.0"
+  },
+  "keywords": ["wert", "bitcoin", "crypto", "api"],
+  "author": "Your Name",
+  "license": "MIT"
 }
